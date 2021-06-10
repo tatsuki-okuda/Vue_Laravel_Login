@@ -142,4 +142,9 @@ return [
         ]),
     ],
 
+
+    'users' => [
+        'admin', 'user'
+    ],
+
 ];
