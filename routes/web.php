@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\BlogController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,15 +25,29 @@ Route::get('/', function () {
     ]);
 });
 
+// Route::redirect('/login', '/');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
 
+Route::resource('/blogs', BlogController::class)
+    ->names(['index'=>'blog.index',
+            'create' => 'blog.create',
+            'edit' => 'blog.edit',
+            'update' => 'blog.update',
+            'destroy' => 'blog.destroy',
+            'store'=>'blog.store'])
+    ->middleware(['auth']);
+
+
 // config/aouthで設定したuser分のrouteをセットする
 foreach(config('fortify.users') as $user){
+    // prefixとgroupにつけることで各ルーティングの最初に名前をつけられる　　$user/login　のように
     Route::prefix($user)
     ->namespace('\Laravel\Fortify\Http\Controllers')
+    // 各ルートに"$user.login"のようにが名付けられる
     ->name($user.'.')
     ->group(function () use($user) {
         /**
@@ -54,6 +69,18 @@ foreach(config('fortify.users') as $user){
         Route::name('logout')->middleware('guest')
         ->post('/logout', 'AuthenticatedSessionController@destroy');
         /**
+        * 登録
+        * @method POST
+        */
+        Route::name('register')->middleware(['guest:'.config('fortify.guard')])
+        ->post('/register', 'RegisteredUserController@store');
+        /**
+        * 登録
+        * @method GET
+        */
+        Route::name('register')->middleware(['guest:'.config('fortify.guard')])
+        ->get('/register', 'RegisteredUserController@create');
+        /**
         * ダッシュボード
         * @method GET
         */
@@ -63,5 +90,7 @@ foreach(config('fortify.users') as $user){
         });
     });
 }
+
+
 
 

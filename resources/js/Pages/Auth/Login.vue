@@ -78,12 +78,14 @@
 
         methods: {
             submit() {
+                const path = location.href.match(/admin/) ? location.href.match(/admin/)[0] : 'user';
                 this.form
                     .transform(data => ({
                         ... data,
                         remember: this.form.remember ? 'on' : ''
                     }))
-                    .post(this.route('login'), {
+                    .post(this.route(`${path}.login`), {
+                    // .post(this.route('login'), {
                         onFinish: () => this.form.reset('password'),
                     })
             }

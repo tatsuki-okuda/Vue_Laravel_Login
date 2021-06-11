@@ -23,6 +23,8 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                // ログイン済みユーザーの管理画面へのリダイレクト処理（マルチログイン）
+                // return redirect(\Str::singular($guard).'/'.RouteServiceProvider::HOME);
                 return redirect(RouteServiceProvider::HOME);
             }
         }

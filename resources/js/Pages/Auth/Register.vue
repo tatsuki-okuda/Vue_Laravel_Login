@@ -7,6 +7,7 @@
         <jet-validation-errors class="mb-4" />
 
         <form @submit.prevent="submit">
+            <h1>アカウント登録</h1>
             <div>
                 <jet-label for="name" value="Name" />
                 <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
@@ -86,7 +87,8 @@
 
         methods: {
             submit() {
-                this.form.post(this.route('register'), {
+                const path = location.href.match(/admin/) ? location.href.match(/admin/)[0] : 'user';
+                this.form.post(this.route(`${path}.register`), {
                     onFinish: () => this.form.reset('password', 'password_confirmation'),
                 })
             }
