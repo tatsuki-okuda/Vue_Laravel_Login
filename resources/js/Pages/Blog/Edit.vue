@@ -8,10 +8,9 @@
 
     <div>
       <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-          <jet-form-section @submitted="createBlog">
-              <template #title>Blog作成</template>
-              <template #description>Blogの追加を行います</template>
-
+          <jet-form-section @submitted="editBlog">
+              <template #title>Blog更新</template>
+              <template #description>Blogの更新を行います</template>
               <template #form>
 
                   <div class="col-span-6 sm:col-span-4">
@@ -27,15 +26,17 @@
                   </div>
                   <div class="col-span-6 sm:col-span-4">
                     <jet-label for="content" value="コンテント" />
-                    <textarea v-model="form.content" class="mt-1 block w-full form-input rounded-md shadow-sm"></textarea>
+                    <!-- <textarea v-model="form.content" class="mt-1 block w-full form-input rounded-md shadow-sm"></textarea> -->
+                    <ckediter v-model="form.content" ></ckediter>
+  
                     <!-- <jet-input-error :message="form.error('content')" class="mt-2" /> -->
                   </div>
               </template>
               <template #actions>
-              <jet-button class="bg-blue-700 text-base">
-                作成
-              </jet-button>
-            </template>
+                <jet-button class="bg-blue-700 text-base">
+                  更新
+                </jet-button>
+              </template>
           </jet-form-section>
 
       </div>
@@ -51,10 +52,11 @@
     import JetLabel from "@/Jetstream/Label";
     import JetButton from "@/Jetstream/Button";
     import JetInputError from "@/Jetstream/InputError";
+    import ckediter from "@/CKEditer/Ckediter";
 
 
     export default {
-        props:['blogs'],
+        props:['blog'],
         components: {
             AppLayout,
             JetFormSection,
@@ -62,25 +64,26 @@
             JetLabel,
             JetButton,
             JetInputError,
+            ckediter
         },
         data() {
           return {
             form: this.$inertia.form(
                 {
-                  _method: "POST",
-                  title: "",
-                  content: "",
+                  _method: "PUT",
+                  title: this.blog.title,
+                  content: this.blog.content,
                 },
                 {
-                  bag: "blogCreate",
+                  bag: "blogUpdate",
                   resetOnSuccess: false,
                 }
             )
           };
         },
         methods:{
-          createBlog(){
-            this.form.post(route("blog.store"));
+          editBlog(){
+            this.form.post(route("blog.update",this.blog.id));
           }
         }
     }
