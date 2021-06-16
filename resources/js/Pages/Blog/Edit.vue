@@ -27,7 +27,13 @@
                   <div class="col-span-6 sm:col-span-4">
                     <jet-label for="content" value="コンテント" />
                     <!-- <textarea v-model="form.content" class="mt-1 block w-full form-input rounded-md shadow-sm"></textarea> -->
-                    <ckediter v-model="form.content" ></ckediter>
+                    <div>
+                        <ckeditor
+                            :editor="editor"
+                            v-model="form.content"
+                            :config="editorConfig"
+                        ></ckeditor>
+                    </div>
   
                     <!-- <jet-input-error :message="form.error('content')" class="mt-2" /> -->
                   </div>
@@ -52,7 +58,7 @@
     import JetLabel from "@/Jetstream/Label";
     import JetButton from "@/Jetstream/Button";
     import JetInputError from "@/Jetstream/InputError";
-    import ckediter from "@/CKEditer/Ckediter";
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
     export default {
@@ -64,7 +70,7 @@
             JetLabel,
             JetButton,
             JetInputError,
-            ckediter
+            ClassicEditor
         },
         data() {
           return {
@@ -78,7 +84,11 @@
                   bag: "blogUpdate",
                   resetOnSuccess: false,
                 }
-            )
+            ),
+            editor: ClassicEditor,
+            editorConfig: {
+                language: 'ja'
+            }
           };
         },
         methods:{

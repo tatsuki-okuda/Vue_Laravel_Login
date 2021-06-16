@@ -8,8 +8,8 @@
     <div>
       <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
         <div>
-            <inertia-link :href="route('blog.create')">
-            <jet-button class="bg-blue-700 text-base">Blogを作成</jet-button>
+            <inertia-link :href="route('blog.create')" >
+                <jet-button class="bg-blue-700 text-base mb-5">Blogを作成</jet-button>
             </inertia-link>
         </div>
         <table>
@@ -22,7 +22,7 @@
             <tbody>
                 <tr v-for="blog in blogs" :key="blog.id">
                     <td class="border px-4 py-2">{{ blog.title }}</td>
-                    <td class="border px-4 py-2">{{ blog.content }}</td>
+                    <td class="border px-4 py-2" v-html:="blog.content"></td>
                     <td class="border px-4 py-2 text-center">
                         <inertia-link :href="route('blog.edit', blog.id)">
                             <jet-button class="bg-green-500 text-base">更新</jet-button>

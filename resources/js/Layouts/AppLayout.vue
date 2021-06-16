@@ -119,7 +119,7 @@
                                         <div class="border-t border-gray-100"></div>
 
                                         <!-- Authentication -->
-                                        <form @submit.prevent="logout">
+                                        <form @submit.prevent="user.logout">
                                             <jet-dropdown-link as="button">
                                                 Log Out
                                             </jet-dropdown-link>
